@@ -1,3 +1,5 @@
+/** @format */
+
 require("dotenv").config();
 
 import { MessageBuilder, Webhook } from "discord-webhook-node";
@@ -17,7 +19,7 @@ hook.setAvatar(
 
 const smallFormatter = Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
-  maximumFractionDigits: 2
+  maximumFractionDigits: 2,
 });
 
 function formatAmount(amount: any, decimals: any) {
@@ -57,6 +59,10 @@ async function main() {
     .getPublicPoolsWithData()
     .call({ gas: 1e18 });
 
+  // Visualize the list of pools
+  // Store this variable and provide it via http or express?
+  console.log({ fusePools });
+
   for (let i = 0; i < fusePools.length; i++) {
     if (i == 4) {
       // Pool 4 is broken, we'll just skip it for now.
@@ -67,10 +73,10 @@ async function main() {
       .getPoolAssetsWithData(fusePools[i].comptroller)
       .call({
         from: "0x0000000000000000000000000000000000000000",
-        gas: 1e18
+        gas: 1e18,
       })
       .then((assets: FuseAsset[]) => {
-        assets.forEach(asset => {
+        assets.forEach((asset) => {
           const cToken = new fuse.web3.eth.Contract(
             JSON.parse(
               fuse.compoundContracts[
